@@ -25,7 +25,7 @@ public class TelephonyManagerConnection {
 		ManagerConnectionFactory factory = new ManagerConnectionFactory(connectionDTO.getAmiManagerIp(),connectionDTO.getAmiUserName(),connectionDTO.getAmiPassword());    	
 		managerConnection = factory.createManagerConnection();
 		managerConnection.login();
-		//amiListener.registerListener(managerConnection);
+	
 		return managerConnection;
 	}
 	
