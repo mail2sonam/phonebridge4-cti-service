@@ -1,0 +1,17 @@
+# YAML file represent disposition details
+---
+- id: 1
+  client: "Orange"
+  mainDispo: "Connected"
+  campaign: "Charges Calling"
+  dispo: "dispo-Follow Up&&subdispo-PTP&&subsubdispo-PTP Date,dispo-Call Back&&subdispo-Will Pay Call Back&&subsubdispo-Call Back Date,dispo-Dispute&&subdispo-Charges Dispute&&subsubdispo-Date,dispo-Others&&subdispo-Third Party,dispo-Issue&&subdispo-RC Related,dispo-Others&&subdispo-Others,dispo-Issue&&subdispo-Payment Not Updated,dispo-Call Back&&subdispo-Left Message"
+- id: 2
+  client: "Eupraxia"
+  mainDispo: "Connected" 
+  campaign: "Summa Calling" 
+  dispo: "dispo-Follow Up,dispo-Call Back,dispo-Will Pay Call Back&&subdispo-PTP,dispo-Will Pay Call Back,dispo-call Back,dispo-Dispute,dispo-Others"   
+- id: 3
+  client: "Amtex"
+  mainDispo: "Connected" 
+  campaign: "Fun Calling" 
+  dispo: "dispo-Will Pay Call Back,dispo-Will Pay Call Back"
