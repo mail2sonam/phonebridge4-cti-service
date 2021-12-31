@@ -21,7 +21,9 @@ import com.eupraxia.telephony.DTO.CallPropertiesDTO;
 import com.eupraxia.telephony.DTO.PostDataDTO;
 import com.eupraxia.telephony.Model.CallPropertiesModel;
 import com.eupraxia.telephony.Model.CallPropertiesTestingModel;
+import com.eupraxia.telephony.components.JwtToken;
 import com.eupraxia.telephony.components.TelephonyManagerConnection;
+import com.eupraxia.telephony.constants.WebStreamProperties;
 import com.eupraxia.telephony.Model.CallLogsModel;
 import com.eupraxia.telephony.repositories.CallPropertiesRepository;
 import com.eupraxia.telephony.repositories.CallPropertiesTestingRepository;
@@ -37,7 +39,7 @@ public class CallServiceImpl implements CallService{
 	CallPropertiesRepository callPropertiesRepository;
 	
 	@Autowired
-	TelephonyManagerConnection telephonyManagerConnection;
+	JwtToken jwtToken;;
 	
 	@Autowired
 	CallPropertiesTestingRepository callPropertiesTestingRepository;
@@ -188,19 +190,26 @@ public class CallServiceImpl implements CallService{
 	
 	@Override
 	public void postData(CallPropertiesModel callPropertiesModel) {
-		PostDataDTO data=new PostDataDTO();
-		data.setPayLoadId("1");
+		String json=null;
+		try {
+		    PostDataDTO data=new PostDataDTO();
+		data.setPayLoadId(callPropertiesModel.hashCode());
         data.setSource("admin");
-        data.setDestSubscriberId("abcd");
+        data.setDestSubscriberId(callPropertiesModel.getExtension());
         data.setTopicName("topicname");
         data.setAccountId("accid");
         data.setMessage(callPropertiesModel);
         data.setMsgPostedOn("");
-		WebClient client=WebClient.builder().baseUrl("http://104.154.188.48:8081/stream").build();
-			client.post().contentType(MediaType.APPLICATION_JSON).header("Authorization","Bearer "+telephonyManagerConnection.getToken())
+		WebClient client=WebClient.builder().baseUrl(WebStreamProperties.PostDataUrl).build();
+		json=client.post().contentType(MediaType.APPLICATION_JSON).header("Authorization","Bearer "+jwtToken.getToken())
 					.body(Mono.just(data), PostDataDTO.class)
 					.retrieve()
-					.bodyToMono(PostDataDTO.class).block();	
+					.bodyToMono(String.class).block();
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println(json);
+		
+		}
 	}
 
 

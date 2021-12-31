@@ -5,7 +5,7 @@ import com.eupraxia.telephony.Model.CallPropertiesModel;
 import lombok.Data;
 @Data
 public class PostDataDTO {
-	private String payLoadId;
+	private int payLoadId;
 	private String source;
 	private String destSubscriberId;
 	private String topicName;

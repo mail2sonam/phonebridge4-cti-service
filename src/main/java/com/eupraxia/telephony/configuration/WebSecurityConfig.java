@@ -60,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/report/getYamlDispoReport").permitAll()
 				.antMatchers("/report/ShowReportsByDate").permitAll()
 				.antMatchers("/report/**").permitAll()
+				.antMatchers("/stream/**").permitAll()
 				.antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**").permitAll()	
 				.antMatchers("/api/carduserdetails/**").hasAuthority("ADMIN").anyRequest().authenticated().and().csrf()
 				.disable().exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint()).and()

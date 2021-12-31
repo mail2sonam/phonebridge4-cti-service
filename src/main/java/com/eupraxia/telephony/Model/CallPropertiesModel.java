@@ -64,6 +64,10 @@ public class CallPropertiesModel implements Serializable{
 	private Date wrapuptime;
 	private String name;
 	private int feedback;
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
 	
 
 }
