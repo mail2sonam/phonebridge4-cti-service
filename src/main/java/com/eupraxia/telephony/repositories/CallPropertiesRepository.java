@@ -26,7 +26,6 @@ public interface CallPropertiesRepository extends MongoRepository<CallProperties
 	ArrayList<CallPropertiesModel> findByPopupStatus(String popupstatus);
 	CallPropertiesModel findByPhoneNoAndIsClosed(String phoneNumber, String isclosed);
 	
-	
 	@Query("{ extension : ?0 }")   
 	List<CallPropertiesModel> findAllByExtension(String extension);
 	

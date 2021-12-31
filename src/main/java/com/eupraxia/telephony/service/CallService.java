@@ -49,6 +49,8 @@ public interface CallService {
 
 	List<CallPropertiesModel> findAllByExtension(String extension);
 
+	void postData(CallPropertiesModel callPropertiesModel);
+
 	//Mono<CallLogsModel> getById(String id);
 	
 	//Mono deleteLog(String id);

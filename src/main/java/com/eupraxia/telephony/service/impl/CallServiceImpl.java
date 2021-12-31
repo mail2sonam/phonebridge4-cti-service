@@ -13,16 +13,21 @@ import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.eupraxia.telephony.DTO.CallPropertiesDTO;
-
+import com.eupraxia.telephony.DTO.PostDataDTO;
 import com.eupraxia.telephony.Model.CallPropertiesModel;
 import com.eupraxia.telephony.Model.CallPropertiesTestingModel;
+import com.eupraxia.telephony.components.TelephonyManagerConnection;
 import com.eupraxia.telephony.Model.CallLogsModel;
 import com.eupraxia.telephony.repositories.CallPropertiesRepository;
 import com.eupraxia.telephony.repositories.CallPropertiesTestingRepository;
 import com.eupraxia.telephony.service.CallService;
+
+import reactor.core.publisher.Mono;
 
 
 @Service
@@ -32,6 +37,9 @@ public class CallServiceImpl implements CallService{
 	CallPropertiesRepository callPropertiesRepository;
 	
 	@Autowired
+	TelephonyManagerConnection telephonyManagerConnection;
+	
+	@Autowired
 	CallPropertiesTestingRepository callPropertiesTestingRepository;
 	
 	@Autowired
@@ -39,6 +47,9 @@ public class CallServiceImpl implements CallService{
 	
 	public void saveOrUpdate(CallPropertiesModel callPropertiesModel) {
 		callPropertiesRepository.save(callPropertiesModel);
+		try {
+			this.postData(callPropertiesModel);
+		}catch(Exception e) {e.printStackTrace();}
 	}
 	
 	@Override
@@ -172,6 +183,24 @@ public class CallServiceImpl implements CallService{
 			return "Error";			
 		}
 		return "Success";
+	}
+	
+	
+	@Override
+	public void postData(CallPropertiesModel callPropertiesModel) {
+		PostDataDTO data=new PostDataDTO();
+		data.setPayLoadId("1");
+        data.setSource("admin");
+        data.setDestSubscriberId("abcd");
+        data.setTopicName("topicname");
+        data.setAccountId("accid");
+        data.setMessage(callPropertiesModel);
+        data.setMsgPostedOn("");
+		WebClient client=WebClient.builder().baseUrl("http://104.154.188.48:8081/stream").build();
+			client.post().contentType(MediaType.APPLICATION_JSON).header("Authorization","Bearer "+telephonyManagerConnection.getToken())
+					.body(Mono.just(data), PostDataDTO.class)
+					.retrieve()
+					.bodyToMono(PostDataDTO.class).block();	
 	}
 
 

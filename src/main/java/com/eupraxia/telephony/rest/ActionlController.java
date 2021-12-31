@@ -79,7 +79,21 @@ public class ActionlController {
 	@Autowired
 	CallPropertiesRepository callPropertiesRepository;
 	
+	@GetMapping("/testApi")
+	public String testApi() {
+		callService.postData(new CallPropertiesModel());
+		return telephonyManagerConnection.getToken();
+	}
 	
+	@GetMapping("/getStreamApis")
+	public ResponseEntity<?> getStreamApis() {
+		Map<Object, Object> map = new HashMap<>();
+		map.put("StreamApi", "http://104.154.188.48:8081/stream/accid/topicname/abcd");
+		map.put("responseCode", "200");
+		map.put("responseMessage", "call Data");
+		map.put("responseType", "Success");
+		 return new ResponseEntity(map, HttpStatus.OK); 
+	}
 	
 	@PostMapping("/line2")
 	 public ResponseEntity<?> line2(@RequestBody OriginateDTO originateDTO) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException {		
